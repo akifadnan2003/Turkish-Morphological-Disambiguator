@@ -1,0 +1,315 @@
+# ============================================================
+# Manual Annotations — Turkish Morphological Disambiguation
+# Annotator: Akif Adnan
+# Format: CoNLL-U (Universal Dependencies)
+# Columns: ID FORM LEMMA UPOS XPOS FEATS HEAD DEPREL DEPS MISC
+# Notes:
+#   - UPOS tags follow Universal Dependencies v2 guidelines
+#   - FEATS include Case, Number, Person, Tense, Mood, Polarity
+#   - HEAD/DEPREL left as _ (outside scope of this project)
+#   - B = begin span, I = inside span (BIO where applicable)
+# ============================================================
+
+# sent_id = custom-001
+# text = Öğrenciler bugün sınava çalışıyor .
+# translation = Students are studying for the exam today.
+# domain = university
+1	Öğrenciler	öğrenci	NOUN	Noun	Case=Nom|Number=Plur|Person=3	_	_	_	_
+2	bugün	bugün	ADV	Adv	_	_	_	_	_
+3	sınava	sınav	NOUN	Noun	Case=Dat|Number=Sing|Person=3	_	_	_	_
+4	çalışıyor	çalış	VERB	Verb	Mood=Ind|Number=Plur|Person=3|Polarity=Pos|Tense=Pres	_	_	_	_
+5	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-002
+# text = Güzel bir şehirde yaşıyorum .
+# translation = I live in a beautiful city.
+# domain = daily life
+1	Güzel	güzel	ADJ	Adj	_	_	_	_	_
+2	bir	bir	DET	Det	_	_	_	_	_
+3	şehirde	şehir	NOUN	Noun	Case=Loc|Number=Sing|Person=3	_	_	_	_
+4	yaşıyorum	yaşa	VERB	Verb	Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres	_	_	_	_
+5	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-003
+# text = Kitabı kütüphaneden aldım .
+# translation = I took the book from the library.
+# domain = daily life
+1	Kitabı	kitap	NOUN	Noun	Case=Acc|Number=Sing|Person=3	_	_	_	_
+2	kütüphaneden	kütüphane	NOUN	Noun	Case=Abl|Number=Sing|Person=3	_	_	_	_
+3	aldım	al	VERB	Verb	Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Past	_	_	_	_
+4	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-004
+# text = Arkadaşım dün bana güzel bir hediye verdi .
+# translation = My friend gave me a nice gift yesterday.
+# domain = daily life
+1	Arkadaşım	arkadaş	NOUN	Noun	Case=Nom|Number=Sing|Person=1|Poss=Yes	_	_	_	_
+2	dün	dün	ADV	Adv	_	_	_	_	_
+3	bana	ben	PRON	Pron	Case=Dat|Number=Sing|Person=1	_	_	_	_
+4	güzel	güzel	ADJ	Adj	_	_	_	_	_
+5	bir	bir	DET	Det	_	_	_	_	_
+6	hediye	hediye	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+7	verdi	ver	VERB	Verb	Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Past	_	_	_	_
+8	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-005
+# text = Türkiye'nin başkenti Ankara'dır .
+# translation = The capital of Turkey is Ankara.
+# domain = geography
+1	Türkiye'nin	Türkiye	PROPN	Noun	Case=Gen|Number=Sing	_	_	_	_
+2	başkenti	başkent	NOUN	Noun	Case=Nom|Number=Sing|Person=3|Poss=Yes	_	_	_	_
+3	Ankara'dır	Ankara	PROPN	Noun	Case=Nom|Number=Sing	_	_	_	_
+4	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-006
+# text = Bu dersi geçmek çok zor .
+# translation = It is very difficult to pass this course.
+# domain = university
+# note = "geçmek" is verbal noun (infinitive), not finite verb
+1	Bu	bu	DET	Det	_	_	_	_	_
+2	dersi	ders	NOUN	Noun	Case=Acc|Number=Sing|Person=3	_	_	_	_
+3	geçmek	geç	VERB	Verb	VerbForm=Inf	_	_	_	_
+4	çok	çok	ADV	Adv	_	_	_	_	_
+5	zor	zor	ADJ	Adj	_	_	_	_	_
+6	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-007
+# text = Profesör bugün çok güzel bir ders anlattı .
+# translation = The professor gave a very good lecture today.
+# domain = university
+1	Profesör	profesör	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+2	bugün	bugün	ADV	Adv	_	_	_	_	_
+3	çok	çok	ADV	Adv	_	_	_	_	_
+4	güzel	güzel	ADJ	Adj	_	_	_	_	_
+5	bir	bir	DET	Det	_	_	_	_	_
+6	ders	ders	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+7	anlattı	anlat	VERB	Verb	Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Past	_	_	_	_
+8	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-008
+# text = İstanbul Türkiye'nin en kalabalık şehridir .
+# translation = Istanbul is the most crowded city of Turkey.
+# domain = geography
+1	İstanbul	İstanbul	PROPN	Noun	Case=Nom|Number=Sing	_	_	_	_
+2	Türkiye'nin	Türkiye	PROPN	Noun	Case=Gen|Number=Sing	_	_	_	_
+3	en	en	ADV	Adv	_	_	_	_	_
+4	kalabalık	kalabalık	ADJ	Adj	_	_	_	_	_
+5	şehridir	şehir	NOUN	Noun	Case=Nom|Number=Sing|Person=3|Poss=Yes	_	_	_	_
+6	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-009
+# text = Dağlarda kar yağıyordu ve hava çok soğuktu .
+# translation = It was snowing in the mountains and the weather was very cold.
+# domain = nature
+# note = compound sentence with CCONJ "ve"; "soğuktu" = ADJ + past copula
+1	Dağlarda	dağ	NOUN	Noun	Case=Loc|Number=Plur|Person=3	_	_	_	_
+2	kar	kar	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+3	yağıyordu	yağ	VERB	Verb	Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Past	_	_	_	_
+4	ve	ve	CCONJ	Conj	_	_	_	_	_
+5	hava	hava	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+6	çok	çok	ADV	Adv	_	_	_	_	_
+7	soğuktu	soğuk	ADJ	Adj	Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Past	_	_	_	_
+8	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-010
+# text = Makine öğrenmesi yapay zekanın önemli bir dalıdır .
+# translation = Machine learning is an important branch of artificial intelligence.
+# domain = technology
+# note = "öğrenmesi" is a verbal noun (VerbForm=Vnoun) used as compound head
+1	Makine	makine	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+2	öğrenmesi	öğren	VERB	Verb	Case=Nom|Number=Sing|Person=3|Poss=Yes|VerbForm=Vnoun	_	_	_	_
+3	yapay	yapay	ADJ	Adj	_	_	_	_	_
+4	zekanın	zeka	NOUN	Noun	Case=Gen|Number=Sing|Person=3	_	_	_	_
+5	önemli	önemli	ADJ	Adj	_	_	_	_	_
+6	bir	bir	DET	Det	_	_	_	_	_
+7	dalıdır	dal	NOUN	Noun	Case=Nom|Number=Sing|Person=3|Poss=Yes	_	_	_	_
+8	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-011
+# text = Yeni bir telefon almak istiyorum .
+# translation = I want to buy a new phone.
+# domain = daily life
+# note = "almak" infinitive, "istiyorum" main verb — modal construction
+1	Yeni	yeni	ADJ	Adj	_	_	_	_	_
+2	bir	bir	DET	Det	_	_	_	_	_
+3	telefon	telefon	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+4	almak	al	VERB	Verb	VerbForm=Inf	_	_	_	_
+5	istiyorum	iste	VERB	Verb	Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres	_	_	_	_
+6	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-012
+# text = Kardeşim bu hafta İzmir'den gelecek .
+# translation = My sibling is coming from Izmir this week.
+# domain = daily life
+1	Kardeşim	kardeş	NOUN	Noun	Case=Nom|Number=Sing|Person=1|Poss=Yes	_	_	_	_
+2	bu	bu	DET	Det	_	_	_	_	_
+3	hafta	hafta	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+4	İzmir'den	İzmir	PROPN	Noun	Case=Abl|Number=Sing	_	_	_	_
+5	gelecek	gel	VERB	Verb	Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Fut	_	_	_	_
+6	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-013
+# text = Proje ödevini yarın teslim etmelisin .
+# translation = You must submit the project assignment tomorrow.
+# domain = university
+# note = "etmelisin" = et + -meli (necessity) + -sin (2nd person singular)
+1	Proje	proje	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+2	ödevini	ödev	NOUN	Noun	Case=Acc|Number=Sing|Person=2|Poss=Yes	_	_	_	_
+3	yarın	yarın	ADV	Adv	_	_	_	_	_
+4	teslim	teslim	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+5	etmelisin	et	VERB	Verb	Mood=Nec|Number=Sing|Person=2|Polarity=Pos|Tense=Pres	_	_	_	_
+6	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-014
+# text = Eski arkadaşlarımla geçen yaz çok eğlendik .
+# translation = I had a lot of fun with my old friends last summer.
+# domain = daily life
+# note = "geçen" is a participial modifier (VerbForm=Part) modifying "yaz"
+1	Eski	eski	ADJ	Adj	_	_	_	_	_
+2	arkadaşlarımla	arkadaş	NOUN	Noun	Case=Ins|Number=Plur|Person=1|Poss=Yes	_	_	_	_
+3	geçen	geç	VERB	Verb	Polarity=Pos|VerbForm=Part|Tense=Pres	_	_	_	_
+4	yaz	yaz	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+5	çok	çok	ADV	Adv	_	_	_	_	_
+6	eğlendik	eğlen	VERB	Verb	Mood=Ind|Number=Plur|Person=1|Polarity=Pos|Tense=Past	_	_	_	_
+7	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-015
+# text = Hocam benden ödevi üç gün içinde bitirmemi istedi .
+# translation = My teacher wanted me to finish the homework within three days.
+# domain = university
+# note = "bitirmemi" = bitir + -me (verbal noun) + -m (1st pers poss) + -i (acc)
+1	Hocam	hoca	NOUN	Noun	Case=Nom|Number=Sing|Person=1|Poss=Yes	_	_	_	_
+2	benden	ben	PRON	Pron	Case=Abl|Number=Sing|Person=1	_	_	_	_
+3	ödevi	ödev	NOUN	Noun	Case=Acc|Number=Sing|Person=3	_	_	_	_
+4	üç	üç	NUM	Num	_	_	_	_	_
+5	gün	gün	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+6	içinde	iç	NOUN	Noun	Case=Loc|Number=Sing|Person=3|Poss=Yes	_	_	_	_
+7	bitirmemi	bitir	VERB	Verb	Case=Acc|Number=Sing|Person=1|Polarity=Pos|Poss=Yes|VerbForm=Vnoun	_	_	_	_
+8	istedi	iste	VERB	Verb	Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Past	_	_	_	_
+9	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-016
+# text = Bu yıl mezun olmayı planlıyorum .
+# translation = I am planning to graduate this year.
+# domain = university
+1	Bu	bu	DET	Det	_	_	_	_	_
+2	yıl	yıl	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+3	mezun	mezun	ADJ	Adj	_	_	_	_	_
+4	olmayı	ol	VERB	Verb	Case=Acc|Polarity=Pos|VerbForm=Vnoun	_	_	_	_
+5	planlıyorum	planla	VERB	Verb	Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres	_	_	_	_
+6	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-017
+# text = Sabah erkenden kalkıp ders çalıştım .
+# translation = I woke up early in the morning and studied.
+# domain = daily life
+# note = "kalkıp" is a converb (VerbForm=Conv), links two actions
+1	Sabah	sabah	ADV	Adv	_	_	_	_	_
+2	erkenden	erken	ADV	Adv	_	_	_	_	_
+3	kalkıp	kalk	VERB	Verb	Polarity=Pos|VerbForm=Conv	_	_	_	_
+4	ders	ders	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+5	çalıştım	çalış	VERB	Verb	Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Past	_	_	_	_
+6	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-018
+# text = CRF modeli Türkçe için çok başarılı sonuçlar verdi .
+# translation = The CRF model gave very successful results for Turkish.
+# domain = NLP / technology
+1	CRF	CRF	PROPN	Noun	Case=Nom|Number=Sing	_	_	_	_
+2	modeli	model	NOUN	Noun	Case=Nom|Number=Sing|Person=3|Poss=Yes	_	_	_	_
+3	Türkçe	Türkçe	NOUN	Noun	Case=Nom|Number=Sing	_	_	_	_
+4	için	için	ADP	Post	_	_	_	_	_
+5	çok	çok	ADV	Adv	_	_	_	_	_
+6	başarılı	başarılı	ADJ	Adj	_	_	_	_	_
+7	sonuçlar	sonuç	NOUN	Noun	Case=Nom|Number=Plur|Person=3	_	_	_	_
+8	verdi	ver	VERB	Verb	Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Past	_	_	_	_
+9	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-019
+# text = Yağmur yağdığı için dışarı çıkamadım .
+# translation = I could not go outside because it rained.
+# domain = daily life
+# note = "yağdığı" is a nominal participle; "çıkamadım" has negative polarity
+1	Yağmur	yağmur	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+2	yağdığı	yağ	VERB	Verb	Case=Nom|Number=Sing|Person=3|Polarity=Pos|Tense=Past|VerbForm=Part	_	_	_	_
+3	için	için	ADP	Post	_	_	_	_	_
+4	dışarı	dışarı	ADV	Adv	_	_	_	_	_
+5	çıkamadım	çık	VERB	Verb	Mood=Ind|Number=Sing|Person=1|Polarity=Neg|Tense=Past	_	_	_	_
+6	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-020
+# text = Bilgisayar mühendisliği bölümünde dört yıl okuyorum .
+# translation = I have been studying in the computer engineering department for four years.
+# domain = university
+1	Bilgisayar	bilgisayar	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+2	mühendisliği	mühendislik	NOUN	Noun	Case=Nom|Number=Sing|Person=3|Poss=Yes	_	_	_	_
+3	bölümünde	bölüm	NOUN	Noun	Case=Loc|Number=Sing|Person=3|Poss=Yes	_	_	_	_
+4	dört	dört	NUM	Num	_	_	_	_	_
+5	yıl	yıl	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+6	okuyorum	oku	VERB	Verb	Mood=Ind|Number=Sing|Person=1|Polarity=Pos|Tense=Pres	_	_	_	_
+7	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-021
+# text = Araştırmacılar büyük veri kümelerini analiz etti .
+# translation = Researchers analyzed large datasets.
+# domain = technology / NLP
+1	Araştırmacılar	araştırmacı	NOUN	Noun	Case=Nom|Number=Plur|Person=3	_	_	_	_
+2	büyük	büyük	ADJ	Adj	_	_	_	_	_
+3	veri	veri	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+4	kümelerini	küme	NOUN	Noun	Case=Acc|Number=Plur|Person=3|Poss=Yes	_	_	_	_
+5	analiz	analiz	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+6	etti	et	VERB	Verb	Mood=Ind|Number=Plur|Person=3|Polarity=Pos|Tense=Past	_	_	_	_
+7	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-022
+# text = Şehrin merkezindeki büyük kütüphane her gün açık .
+# translation = The large library in the city center is open every day.
+# domain = daily life
+1	Şehrin	şehir	NOUN	Noun	Case=Gen|Number=Sing|Person=3	_	_	_	_
+2	merkezindeki	merkez	NOUN	Noun	Case=Loc|Number=Sing|Person=3|Poss=Yes	_	_	_	_
+3	büyük	büyük	ADJ	Adj	_	_	_	_	_
+4	kütüphane	kütüphane	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+5	her	her	DET	Det	_	_	_	_	_
+6	gün	gün	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+7	açık	açık	ADJ	Adj	_	_	_	_	_
+8	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-023
+# text = Doğal dil işleme alanında birçok yeni yöntem geliştirilmiştir .
+# translation = Many new methods have been developed in the field of natural language processing.
+# domain = NLP / academic
+# note = "geliştirilmiştir" = passive voice + evidential past
+1	Doğal	doğal	ADJ	Adj	_	_	_	_	_
+2	dil	dil	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+3	işleme	işle	NOUN	Noun	Case=Dat|Number=Sing|Person=3	_	_	_	_
+4	alanında	alan	NOUN	Noun	Case=Loc|Number=Sing|Person=3|Poss=Yes	_	_	_	_
+5	birçok	birçok	DET	Det	_	_	_	_	_
+6	yeni	yeni	ADJ	Adj	_	_	_	_	_
+7	yöntem	yöntem	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+8	geliştirilmiştir	geliştir	VERB	Verb	Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Past|Voice=Pass	_	_	_	_
+9	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-024
+# text = Bu çalışmada Türkçe cümlelerin morfolojik çözümlemesi yapılmıştır .
+# translation = In this study, morphological disambiguation of Turkish sentences has been performed.
+# domain = NLP / academic
+1	Bu	bu	DET	Det	_	_	_	_	_
+2	çalışmada	çalış	VERB	Verb	Case=Loc|Number=Sing|Person=3|VerbForm=Vnoun	_	_	_	_
+3	Türkçe	Türkçe	NOUN	Noun	Case=Nom|Number=Sing	_	_	_	_
+4	cümlelerin	cümle	NOUN	Noun	Case=Gen|Number=Plur|Person=3	_	_	_	_
+5	morfolojik	morfolojik	ADJ	Adj	_	_	_	_	_
+6	çözümlemesi	çözümle	VERB	Verb	Case=Nom|Number=Sing|Person=3|Poss=Yes|VerbForm=Vnoun	_	_	_	_
+7	yapılmıştır	yap	VERB	Verb	Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Past|Voice=Pass	_	_	_	_
+8	.	.	PUNCT	Punc	_	_	_	_	_
+
+# sent_id = custom-025
+# text = Modelin başarı oranı yüzde doksana ulaştı .
+# translation = The model's success rate reached ninety percent.
+# domain = NLP / evaluation
+1	Modelin	model	NOUN	Noun	Case=Gen|Number=Sing|Person=3	_	_	_	_
+2	başarı	başarı	NOUN	Noun	Case=Nom|Number=Sing|Person=3	_	_	_	_
+3	oranı	oran	NOUN	Noun	Case=Nom|Number=Sing|Person=3|Poss=Yes	_	_	_	_
+4	yüzde	yüzde	NOUN	Noun	Case=Loc|Number=Sing|Person=3	_	_	_	_
+5	doksana	doksan	NUM	Num	Case=Dat	_	_	_	_
+6	ulaştı	ulaş	VERB	Verb	Mood=Ind|Number=Sing|Person=3|Polarity=Pos|Tense=Past	_	_	_	_
+7	.	.	PUNCT	Punc	_	_	_	_	_
