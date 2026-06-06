@@ -1,0 +1,31 @@
+# Generated data — run python download_data.py to recreate
+data/
+
+# Trained model — run python -X utf8 morpho_disambig.py to recreate
+model/
+
+# Generated charts and predictions — recreated on each run
+results/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Environments
+.env
+.venv
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

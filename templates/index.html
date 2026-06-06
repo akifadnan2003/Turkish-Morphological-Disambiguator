@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Turkish Morphological Disambiguator — BTU NLP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #f0f4f8;
+      --surface:   #ffffff;
+      --border:    #e2e8f0;
+      --border-2:  #cbd5e1;
+      --text:      #0f172a;
+      --text-2:    #475569;
+      --text-3:    #94a3b8;
+      --accent:    #1d4ed8;
+      --accent-bg: #eff6ff;
+      --radius:    10px;
+      --shadow:    0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.05);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    .header-badge {
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 5px;
+      letter-spacing: .4px;
+      white-space: nowrap;
+    }
+    .header-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .header-sub {
+      font-size: 12px;
+      color: var(--text-3);
+      margin-left: auto;
+    }
+
+    /* ── Layout ── */
+    .page { max-width: 1240px; margin: 0 auto; padding: 28px 24px 48px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .card-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: .7px;
+    }
+    .card-body { padding: 20px; }
+
+    /* ── Textarea ── */
+    textarea {
+      width: 100%;
+      min-height: 88px;
+      padding: 11px 13px;
+      border: 1px solid var(--border-2);
+      border-radius: 7px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text);
+      background: #fafcff;
+      resize: vertical;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+      line-height: 1.6;
+    }
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px #1d4ed815;
+    }
+    textarea::placeholder { color: var(--text-3); }
+
+    /* ── Buttons ── */
+    .btn-row { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border: none;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background .15s, transform .1s, box-shadow .15s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 1px 3px #1d4ed840;
+    }
+    .btn-primary:hover { background: #1e40af; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-2);
+      border: 1px solid var(--border-2);
+    }
+    .btn-ghost:hover { background: var(--bg); }
+
+    /* ── Spinner ── */
+    .spinner {
+      display: none;
+      width: 16px; height: 16px;
+      border: 2px solid var(--border-2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .5s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Example pills ── */
+    .examples { margin-top: 16px; }
+    .examples-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 8px;
+    }
+    .pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill {
+      font-size: 12px;
+      padding: 4px 11px;
+      background: var(--accent-bg);
+      border: 1px solid #bfdbfe;
+      border-radius: 20px;
+      color: var(--accent);
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .pill:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* ── Error ── */
+    .error-bar {
+      display: none;
+      margin-top: 10px;
+      padding: 9px 13px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 7px;
+      color: #991b1b;
+      font-size: 13px;
+    }
+
+    /* ── No model ── */
+    .no-model {
+      margin-bottom: 20px;
+      padding: 13px 16px;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      color: #78350f;
+      font-size: 13px;
+    }
+    .no-model code {
+      font-family: 'JetBrains Mono', monospace;
+      background: #fef3c7;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: .92em;
+    }
+
+    /* ── Tabs ── */
+    .tabs { display: flex; gap: 2px; }
+    .tab {
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-3);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all .15s;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+    }
+    .tab.active {
+      background: var(--accent-bg);
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Annotation view (spaCy-style) ── */
+    .annotation-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px 4px;
+      padding: 20px 16px;
+      background: #fafcff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      line-height: 1;
+      min-height: 72px;
+      align-items: flex-end;
+    }
+    .ann-token {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 4px 2px;
+      cursor: default;
+      border-radius: 4px;
+      transition: background .12s;
+    }
+    .ann-token:hover { background: #f1f5f9; }
+    .ann-word {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .ann-line {
+      width: 100%;
+      height: 2px;
+      border-radius: 1px;
+    }
+    .ann-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+    .ann-conf {
+      font-size: 10px;
+      color: var(--text-3);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* POS color palette — pastel academic */
+    .pos-NOUN  { --c:#1d4ed8; --bg:#dbeafe; }
+    .pos-VERB  { --c:#15803d; --bg:#dcfce7; }
+    .pos-ADJ   { --c:#92400e; --bg:#fef3c7; }
+    .pos-ADV   { --c:#5b21b6; --bg:#ede9fe; }
+    .pos-PRON  { --c:#0f766e; --bg:#ccfbf1; }
+    .pos-PROPN { --c:#075985; --bg:#e0f2fe; }
+    .pos-NUM   { --c:#713f12; --bg:#fef9c3; }
+    .pos-PUNCT { --c:#475569; --bg:#f1f5f9; }
+    .pos-DET   { --c:#065f46; --bg:#d1fae5; }
+    .pos-ADP   { --c:#991b1b; --bg:#fee2e2; }
+    .pos-CCONJ { --c:#9d174d; --bg:#fce7f3; }
+    .pos-AUX   { --c:#0369a1; --bg:#e0f2fe; }
+    .pos-INTJ  { --c:#9a3412; --bg:#ffedd5; }
+    .pos-X     { --c:#64748b; --bg:#f1f5f9; }
+
+    .ann-line { background: var(--c, #94a3b8); }
+    .ann-tag  { background: var(--bg, #f1f5f9); color: var(--c, #64748b); }
+
+    /* ── Legend ── */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      background: #fafcff;
+      border-radius: 0 0 8px 8px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--text-2);
+      font-weight: 500;
+    }
+    .legend-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    /* ── CoNLL-U table ── */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      background: #f8fafc;
+      color: var(--text-3);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      padding: 9px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr:hover { background: #f8fafc; }
+    tbody tr:last-child td { border-bottom: none; }
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-2);
+      white-space: nowrap;
+    }
+    td.td-form { font-weight: 600; color: var(--text); }
+    td.td-pos  { font-weight: 700; }
+    td.td-id   { color: var(--text-3); width: 40px; }
+    td.td-null { color: #cbd5e1; }
+
+    /* ── Metric cards (sidebar) ── */
+    .metric-big {
+      text-align: center;
+      padding: 20px 16px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .metric-big-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+    .metric-big-value {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin: 4px 0 2px;
+    }
+    .metric-big-sub { font-size: 11px; color: var(--text-3); }
+
+    .progress-bar-wrap {
+      height: 5px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      margin: 6px 0 0;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--accent);
+      transition: width .6s ease;
+    }
+
+    .metric-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+    .metric-row:last-child { border-bottom: none; }
+    .metric-row-label { font-size: 12px; color: var(--text-2); font-weight: 500; }
+    .metric-row-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+    .metric-row-value.accent { color: var(--accent); }
+
+    .metric-section-title {
+      padding: 10px 16px 4px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: .7px;
+    }
+
+    /* ── Charts ── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    @media (max-width: 700px) { .charts-grid { grid-template-columns: 1fr; } }
+    .chart-img {
+      width: 100%;
+      display: block;
+      border-radius: 6px;
+    }
+
+    /* ── Section heading ── */
+    .section-heading {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      margin: 28px 0 12px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="header-badge">BTU NLP</span>
+  <span class="header-title">Turkish Morphological Disambiguator</span>
+  <span class="header-sub">Conditional Random Fields &nbsp;&bull;&nbsp; UD Turkish-IMST &nbsp;&bull;&nbsp; 2025–2026</span>
+</header>
+
+<div class="page">
+
+  {% if not model_ready %}
+  <div class="no-model">
+    <strong>Model not loaded.</strong> Run <code>python -X utf8 morpho_disambig.py</code> first, then restart the server.
+  </div>
+  {% endif %}
+
+  <div class="grid">
+
+    <!-- ── Left column ── -->
+    <div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Input Sentence</span>
+        </div>
+        <div class="card-body">
+          <textarea id="inputText"
+            placeholder="Enter a space-tokenized Turkish sentence and press Enter.&#10;Example: Dün akşam toplantıdan erken çıktım ."
+            {% if not model_ready %}disabled{% endif %}
+          ></textarea>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="runPredict()" {% if not model_ready %}disabled{% endif %}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Analyze
+            </button>
+            <div class="spinner" id="spinner"></div>
+            <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+          </div>
+
+          <div class="error-bar" id="errorBanner"></div>
+
+          <div class="examples">
+            <div class="examples-label">Try an example</div>
+            <div class="pills">
+              {% for ex in examples %}
+              <span class="pill" onclick="loadExample(this)">{{ ex }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results card -->
+      <div id="resultsCard" style="margin-top:20px;display:none;">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Annotation</span>
+            <div class="tabs">
+              <button class="tab active" onclick="switchTab('annotation',this)">Visual</button>
+              <button class="tab" onclick="switchTab('conllu',this)">CoNLL-U</button>
+            </div>
+          </div>
+
+          <!-- Visual tab -->
+          <div id="tab-annotation" class="tab-panel active" style="padding:16px 16px 0;">
+            <div class="annotation-wrap" id="annotationWrap"></div>
+            <div class="legend" id="legendWrap"></div>
+          </div>
+
+          <!-- CoNLL-U tab -->
+          <div id="tab-conllu" class="tab-panel" style="padding:16px;">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>FORM</th>
+                    <th>LEMMA</th>
+                    <th>UPOS</th>
+                    <th>XPOS</th>
+                    <th>FEATS</th>
+                    <th>HEAD</th>
+                    <th>DEPREL</th>
+                    <th>DEPS</th>
+                    <th>MISC</th>
+                  </tr>
+                </thead>
+                <tbody id="conlluBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Sidebar ── -->
+    <div>
+      <div class="card">
+        <div class="metric-big">
+          <div class="metric-big-label">Test Accuracy</div>
+          <div class="metric-big-value">{{ stats.test_accuracy }}<span style="font-size:1.2rem;font-weight:500;color:#94a3b8">%</span></div>
+          <div class="metric-big-sub">on 1,100 held-out sentences</div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" style="width:{{ stats.test_accuracy }}%"></div>
+          </div>
+        </div>
+
+        <div class="metric-row">
+          <span class="metric-row-label">Weighted F1</span>
+          <span class="metric-row-value accent">{{ stats.weighted_f1 }}%</span>
+        </div>
+
+        <div class="metric-section-title">Configuration</div>
+        <div class="metric-row">
+          <span class="metric-row-label">Algorithm</span>
+          <span class="metric-row-value">CRF (L-BFGS)</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-row-label">Dataset</span>
+          <span class="metric-row-value">UD Turkish-IMST</span>
+        </div>
+
+        <div class="metric-section-title">Data Split</div>
+        <div class="metric-row">
+          <span class="metric-row-label">Train</span>
+          <span class="metric-row-value">{{ stats.train_sentences }} sentences</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-row-label">Dev</span>
+          <span class="metric-row-value">1,100 sentences</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-row-label">Test</span>
+          <span class="metric-row-value">{{ stats.test_sentences }} sentences</span>
+        </div>
+
+        <div class="metric-section-title">Best / Worst Class</div>
+        <div class="metric-row">
+          <span class="metric-row-label">Best &mdash; PUNCT</span>
+          <span class="metric-row-value" style="color:#15803d">F1 99.9%</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-row-label">Hardest &mdash; PROPN</span>
+          <span class="metric-row-value" style="color:#92400e">F1 76.6%</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.grid -->
+
+  <!-- Charts -->
+  <div class="section-heading">Evaluation Results</div>
+  <div class="charts-grid">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Confusion Matrix &mdash; Test Set</span></div>
+      <div class="card-body" style="padding:12px;">
+        <img class="chart-img" src="/results/confusion_matrix_test.png" alt="Confusion Matrix"
+             onerror="this.closest('.card').style.display='none'">
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">F1 Score per Class &mdash; Test Set</span></div>
+      <div class="card-body" style="padding:12px;">
+        <img class="chart-img" src="/results/f1_per_class_test.png" alt="F1 per class"
+             onerror="this.closest('.card').style.display='none'">
+      </div>
+    </div>
+  </div>
+
+</div><!-- /.page -->
+
+<script>
+  /* ── POS colour map (matches CSS variables) ── */
+  const POS = {
+    NOUN:  { c:'#1d4ed8', bg:'#dbeafe' },
+    VERB:  { c:'#15803d', bg:'#dcfce7' },
+    ADJ:   { c:'#92400e', bg:'#fef3c7' },
+    ADV:   { c:'#5b21b6', bg:'#ede9fe' },
+    PRON:  { c:'#0f766e', bg:'#ccfbf1' },
+    PROPN: { c:'#075985', bg:'#e0f2fe' },
+    NUM:   { c:'#713f12', bg:'#fef9c3' },
+    PUNCT: { c:'#475569', bg:'#f1f5f9' },
+    DET:   { c:'#065f46', bg:'#d1fae5' },
+    ADP:   { c:'#991b1b', bg:'#fee2e2' },
+    CCONJ: { c:'#9d174d', bg:'#fce7f3' },
+    AUX:   { c:'#0369a1', bg:'#e0f2fe' },
+    INTJ:  { c:'#9a3412', bg:'#ffedd5' },
+    X:     { c:'#64748b', bg:'#f1f5f9' },
+  };
+  function pc(pos) { return POS[pos] || { c:'#64748b', bg:'#f1f5f9' }; }
+
+  /* ── Tab switching ── */
+  function switchTab(name, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  /* ── Example loader ── */
+  function loadExample(el) {
+    document.getElementById('inputText').value = el.textContent.trim();
+    document.getElementById('inputText').focus();
+  }
+
+  /* ── Clear ── */
+  function clearAll() {
+    document.getElementById('inputText').value = '';
+    document.getElementById('resultsCard').style.display = 'none';
+    document.getElementById('errorBanner').style.display = 'none';
+  }
+
+  /* ── Predict ── */
+  async function runPredict() {
+    const text = document.getElementById('inputText').value.trim();
+    if (!text) return;
+
+    const spinner  = document.getElementById('spinner');
+    const errBar   = document.getElementById('errorBanner');
+    spinner.style.display = 'block';
+    errBar.style.display  = 'none';
+
+    try {
+      const res  = await fetch('/predict', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ text }),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        errBar.textContent    = data.error;
+        errBar.style.display  = 'block';
+        return;
+      }
+
+      renderAnnotation(data.tokens);
+      renderConllu(data.tokens);
+      document.getElementById('resultsCard').style.display = 'block';
+
+      // Always open on Visual tab when new result arrives
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-annotation').classList.add('active');
+      document.querySelectorAll('.tab')[0].classList.add('active');
+
+    } catch (e) {
+      errBar.textContent   = 'Request failed: ' + e.message;
+      errBar.style.display = 'block';
+    } finally {
+      spinner.style.display = 'none';
+    }
+  }
+
+  /* ── Render annotation (spaCy-style) ── */
+  function renderAnnotation(tokens) {
+    const wrap = document.getElementById('annotationWrap');
+    wrap.innerHTML = '';
+    const seen = new Set();
+
+    tokens.forEach(tok => {
+      const { c, bg } = pc(tok.pos);
+      const div = document.createElement('div');
+      div.className = `ann-token pos-${tok.pos}`;
+      div.title = `${tok.pos} — ${tok.confidence}% confidence`;
+      div.innerHTML =
+        `<span class="ann-word">${tok.form}</span>` +
+        `<div class="ann-line" style="background:${c}"></div>` +
+        `<span class="ann-tag" style="background:${bg};color:${c}">${tok.pos}</span>` +
+        `<span class="ann-conf">${tok.confidence}%</span>`;
+      wrap.appendChild(div);
+      seen.add(tok.pos);
+    });
+
+    /* Legend */
+    const legend = document.getElementById('legendWrap');
+    legend.innerHTML = '';
+    seen.forEach(pos => {
+      const { c } = pc(pos);
+      const item = document.createElement('div');
+      item.className = 'legend-item';
+      item.innerHTML =
+        `<div class="legend-dot" style="background:${c}"></div>` +
+        `<span>${pos}</span>`;
+      legend.appendChild(item);
+    });
+  }
+
+  /* ── Render CoNLL-U table ── */
+  function renderConllu(tokens) {
+    const tbody = document.getElementById('conlluBody');
+    tbody.innerHTML = '';
+    tokens.forEach(tok => {
+      const { c } = pc(tok.pos);
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        `<td class="td-id">${tok.id}</td>` +
+        `<td class="td-form">${tok.form}</td>` +
+        `<td class="td-null">_</td>` +
+        `<td class="td-pos" style="color:${c}">${tok.pos}</td>` +
+        `<td class="td-pos" style="color:${c}">${tok.pos}</td>` +
+        `<td class="td-null">_</td>` +
+        `<td class="td-null">_</td>` +
+        `<td class="td-null">_</td>` +
+        `<td class="td-null">_</td>` +
+        `<td class="td-null">_</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  /* ── Enter key ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('inputText').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); runPredict(); }
+    });
+  });
+</script>
+
+</body>
+</html>
