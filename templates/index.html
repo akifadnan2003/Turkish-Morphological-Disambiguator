@@ -444,6 +444,31 @@
       border-radius: 6px;
     }
 
+    /* ── Metrics grid ── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    @media (max-width: 700px) { .metrics-grid { grid-template-columns: 1fr; } }
+    .f1-high   { color: #15803d; font-weight: 700; }
+    .f1-mid    { color: #92400e; font-weight: 700; }
+    .f1-low    { color: #991b1b; font-weight: 700; }
+    .tag-badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+    .summary-row {
+      background: #eff6ff !important;
+      font-weight: 600;
+    }
+    .summary-row td { color: var(--accent); }
+
     /* ── Section heading ── */
     .section-heading {
       font-size: 11px;
@@ -452,6 +477,150 @@
       text-transform: uppercase;
       letter-spacing: .7px;
       margin: 28px 0 12px;
+    }
+
+    /* ── My contributions ── */
+    .contrib-intro {
+      font-size: 13px;
+      color: var(--text-2);
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+    .domain-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .filter-btn {
+      padding: 5px 13px;
+      border-radius: 20px;
+      border: 1px solid var(--border-2);
+      background: var(--surface);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-2);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all .15s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .ann-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 14px;
+    }
+    .ann-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: box-shadow .15s;
+    }
+    .ann-card:hover { box-shadow: var(--shadow-md); }
+    .ann-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: #fafcff;
+      flex-wrap: wrap;
+    }
+    .sent-id { font-size: 11px; font-weight: 700; color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+    .domain-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .domain-university    { background: #dbeafe; color: #1d4ed8; }
+    .domain-daily-life, .domain-daily\ life { background: #dcfce7; color: #15803d; }
+    .domain-nlp, .domain-technology, .domain-nlp-technology, .domain-nlp-academic, .domain-nlp-evaluation { background: #ede9fe; color: #5b21b6; }
+    .domain-geography     { background: #fef3c7; color: #92400e; }
+    .domain-nature        { background: #ccfbf1; color: #0f766e; }
+    .domain-general       { background: #f1f5f9; color: #475569; }
+    .acc-badge {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .acc-perfect { background: #dcfce7; color: #15803d; }
+    .acc-good    { background: #fef9c3; color: #92400e; }
+    .acc-poor    { background: #fee2e2; color: #991b1b; }
+    .ann-card-text {
+      padding: 10px 14px 2px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .ann-card-trans {
+      padding: 0 14px 10px;
+      font-size: 11px;
+      color: var(--text-3);
+      font-style: italic;
+    }
+    .ann-tok-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 10px 14px 12px;
+      border-top: 1px solid var(--border);
+      background: #fafcff;
+    }
+    .ann-tok {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 4px 6px;
+      border-radius: 5px;
+      border: 1px solid transparent;
+    }
+    .ann-tok.tok-ok  { border-color: #bbf7d0; background: #f0fdf4; }
+    .ann-tok.tok-err { border-color: #fecaca; background: #fef2f2; }
+    .tok-form { font-size: 12px; font-weight: 600; color: var(--text); }
+    .tok-gold { font-size: 10px; font-weight: 700; color: #15803d; }
+    .tok-pred { font-size: 10px; font-weight: 700; color: #991b1b; }
+
+    /* ── Feature cards ── */
+    .feat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .feat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+    }
+    .feat-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .feat-example {
+      font-size: 11px;
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 3px;
+    }
+    .feat-signal {
+      font-size: 11px;
+      color: var(--text-3);
     }
   </style>
 </head>
@@ -605,6 +774,119 @@
 
   </div><!-- /.grid -->
 
+  <!-- ── My Contributions ── -->
+  <div class="section-heading">My Manual Annotations — 25 Hand-Labeled Turkish Sentences</div>
+  <p class="contrib-intro">
+    Each sentence below was manually annotated by me in CoNLL-U format — including UPOS tag, lemma, and morphological features (Case, Number, Person, Tense, Mood, Polarity, VerbForm, Voice).
+    Green tokens = model agrees with my annotation. Red tokens = model made a different prediction from my gold label.
+  </p>
+
+  <div class="domain-filters">
+    <button class="filter-btn active" onclick="filterDomain('all',this)">All (25)</button>
+    <button class="filter-btn" onclick="filterDomain('university',this)">University (8)</button>
+    <button class="filter-btn" onclick="filterDomain('daily',this)">Daily Life (8)</button>
+    <button class="filter-btn" onclick="filterDomain('nlp',this)">NLP / Tech (5)</button>
+    <button class="filter-btn" onclick="filterDomain('geography',this)">Geography (2)</button>
+    <button class="filter-btn" onclick="filterDomain('nature',this)">Nature (1)</button>
+    <button class="filter-btn" onclick="filterDomain('eval',this)">Evaluation (1)</button>
+  </div>
+
+  <div class="ann-cards" id="annCards">
+    {% for s in annotations %}
+    <div class="ann-card" data-domain="{{ s.domain }}">
+      <div class="ann-card-header">
+        <span class="sent-id">{{ s.id }}</span>
+        <span class="domain-badge domain-{{ s.domain | replace(' ', '-') | replace('/', '-') }}">{{ s.domain }}</span>
+        <span class="acc-badge {% if s.pct == 100 %}acc-perfect{% elif s.pct >= 75 %}acc-good{% else %}acc-poor{% endif %}">
+          {{ s.pct }}% &nbsp;({{ s.correct }}/{{ s.total }})
+        </span>
+      </div>
+      <div class="ann-card-text">{{ s.text }}</div>
+      <div class="ann-card-trans">{{ s.translation }}</div>
+      <div class="ann-tok-row">
+        {% for tok in s.tokens %}
+        <div class="ann-tok {% if tok.match %}tok-ok{% else %}tok-err{% endif %}"
+             title="Lemma: {{ tok.lemma }}&#10;My label: {{ tok.gold }}{% if tok.gold_feats != '_' %}+{{ tok.gold_feats }}{% endif %}&#10;Predicted: {{ tok.pred }}{% if tok.pred_feats != '_' %}+{{ tok.pred_feats }}{% endif %}">
+          <span class="tok-form">{{ tok.form }}</span>
+          <span class="tok-gold">{{ tok.gold }}</span>
+          {% if not tok.match %}
+          <span class="tok-pred">→ {{ tok.pred }}</span>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- ── My Feature Engineering ── -->
+  <div class="section-heading">My Feature Engineering — Hand-Crafted Turkish Morphology Features</div>
+  <p class="contrib-intro">
+    I designed 40+ features specific to Turkish agglutinative morphology. These are not automatic — each suffix pattern and vowel harmony rule was identified and implemented manually.
+  </p>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-name">Ablative Suffix</div>
+      <div class="feat-example">-dan / -den / -tan / -ten</div>
+      <div class="feat-signal">Strong NOUN signal (separation from)</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-name">Locative Suffix</div>
+      <div class="feat-example">-da / -de / -ta / -te</div>
+      <div class="feat-signal">Strong NOUN signal (location)</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-name">Present Continuous</div>
+      <div class="feat-example">-yor / -iyor</div>
+      <div class="feat-signal">VERB (ongoing action)</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-name">Past Tense</div>
+      <div class="feat-example">-dı / -di / -du / -dü</div>
+      <div class="feat-signal">VERB (definite past)</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-name">Evidential Past</div>
+      <div class="feat-example">-mış / -miş / -muş / -müş</div>
+      <div class="feat-signal">VERB (reported/inferred past)</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-name">Plural Suffix</div>
+      <div class="feat-example">-lar / -ler</div>
+      <div class="feat-signal">NOUN (plural number)</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-name">Infinitive</div>
+      <div class="feat-example">-mak / -mek</div>
+      <div class="feat-signal">VERB (verbal noun / infinitive)</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-name">Adjective-Forming</div>
+      <div class="feat-example">-lı / -li / -lu / -lü</div>
+      <div class="feat-signal">ADJ (having a property)</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-name">Negation Adj.</div>
+      <div class="feat-example">-sız / -siz / -suz / -süz</div>
+      <div class="feat-signal">ADJ (without a property)</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-name">Vowel Harmony</div>
+      <div class="feat-example">front (e,i,ü,ö) / back (a,ı,u,o)</div>
+      <div class="feat-signal">Morphological class discriminator</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-name">Apostrophe</div>
+      <div class="feat-example">Ankara'da, Türkiye'nin</div>
+      <div class="feat-signal">PROPN (proper noun + suffix)</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-name">Context Window ±2</div>
+      <div class="feat-example">prev/next 2 word forms + suffixes</div>
+      <div class="feat-signal">Disambiguation by surrounding context</div>
+    </div>
+  </div>
+
   <!-- Charts -->
   <div class="section-heading">Evaluation Results</div>
   <div class="charts-grid">
@@ -623,6 +905,90 @@
       </div>
     </div>
   </div>
+
+  <!-- Per-class metrics tables -->
+  <div class="section-heading">Per-Class Evaluation Metrics</div>
+  <div class="metrics-grid">
+
+    <!-- Test set -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Test Set &mdash; 1,100 sentences / 10,032 tokens</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tag</th>
+              <th>Precision</th>
+              <th>Recall</th>
+              <th>F1</th>
+              <th>Support</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for m in per_class.test %}
+            <tr>
+              <td>
+                <span class="tag-badge pos-{{ m.tag }}" style="background:var(--bg,#f1f5f9);color:var(--c,#64748b)">{{ m.tag }}</span>
+              </td>
+              <td class="td-pos" style="font-family:'JetBrains Mono',monospace">{{ "%.1f"|format(m.precision) }}%</td>
+              <td class="td-pos" style="font-family:'JetBrains Mono',monospace">{{ "%.1f"|format(m.recall) }}%</td>
+              <td class="{% if m.f1 >= 90 %}f1-high{% elif m.f1 >= 80 %}f1-mid{% else %}f1-low{% endif %}"
+                  style="font-family:'JetBrains Mono',monospace">{{ "%.1f"|format(m.f1) }}%</td>
+              <td class="td-null" style="font-family:'JetBrains Mono',monospace">{{ "{:,}".format(m.support) }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="summary-row">
+              <td colspan="3">Accuracy / Weighted avg</td>
+              <td style="font-family:'JetBrains Mono',monospace">90.9%</td>
+              <td style="font-family:'JetBrains Mono',monospace">10,032</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Manual annotations -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Manual Annotations &mdash; 25 sentences / 169 tokens</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Tag</th>
+              <th>Precision</th>
+              <th>Recall</th>
+              <th>F1</th>
+              <th>Support</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for m in per_class.custom %}
+            <tr>
+              <td>
+                <span class="tag-badge pos-{{ m.tag }}" style="background:var(--bg,#f1f5f9);color:var(--c,#64748b)">{{ m.tag }}</span>
+              </td>
+              <td class="td-pos" style="font-family:'JetBrains Mono',monospace">{{ "%.1f"|format(m.precision) }}%</td>
+              <td class="td-pos" style="font-family:'JetBrains Mono',monospace">{{ "%.1f"|format(m.recall) }}%</td>
+              <td class="{% if m.f1 >= 90 %}f1-high{% elif m.f1 >= 80 %}f1-mid{% else %}f1-low{% endif %}"
+                  style="font-family:'JetBrains Mono',monospace">{{ "%.1f"|format(m.f1) }}%</td>
+              <td class="td-null" style="font-family:'JetBrains Mono',monospace">{{ m.support }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="summary-row">
+              <td colspan="3">Accuracy</td>
+              <td style="font-family:'JetBrains Mono',monospace">87.6%</td>
+              <td style="font-family:'JetBrains Mono',monospace">169</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /.metrics-grid -->
 
 </div><!-- /.page -->
 
@@ -756,12 +1122,29 @@
         `<td class="td-null">_</td>` +
         `<td class="td-pos" style="color:${c}">${tok.pos}</td>` +
         `<td class="td-pos" style="color:${c}">${tok.pos}</td>` +
-        `<td class="td-null">_</td>` +
+        `<td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#475569">${tok.feats || '_'}</td>` +
         `<td class="td-null">_</td>` +
         `<td class="td-null">_</td>` +
         `<td class="td-null">_</td>` +
         `<td class="td-null">_</td>`;
       tbody.appendChild(tr);
+    });
+  }
+
+  /* ── Domain filter ── */
+  function filterDomain(key, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.ann-card').forEach(card => {
+      const d = card.dataset.domain.toLowerCase();
+      const show = key === 'all'
+        || (key === 'university' && d.includes('university'))
+        || (key === 'daily'      && d.includes('daily'))
+        || (key === 'nlp'        && (d.includes('nlp') || d.includes('tech')))
+        || (key === 'geography'  && d.includes('geo'))
+        || (key === 'nature'     && d.includes('nature'))
+        || (key === 'eval'       && d.includes('eval'));
+      card.style.display = show ? '' : 'none';
     });
   }
 

@@ -291,6 +291,37 @@ feat_table = make_table(
     [TW*0.35, TW*0.3, TW*0.35]
 )
 story += [feat_table, P("Table 3. Turkish-specific features used in the CRF model (40+ total).", "caption")]
+story.append(SP(10))
+
+story += [
+    P("<b>3.3 Zemberek ve Aday Çözümleme Yaklaşımı (Candidate Generation)</b>", "h2"),
+    P("Proje isterlerinde belirtilen Zemberek tabanlı aday kelime çözümleme mantığı, "
+      "sistemde <i>Corpus-Based Candidate Dictionary</i> (Derlem Tabanlı Aday Sözlüğü) "
+      "yöntemiyle simüle edilmiştir. Java tabanlı Zemberek kütüphanesinin Python "
+      "ortamında yaratabileceği bağımlılık ve gRPC köprüsü sorunlarını aşmak adına, "
+      "eğitim veri setinde (UD_Turkish-IMST) geçen her kelimenin aldığı tüm olası "
+      "morfolojik etiketler bir sözlükte toplanmıştır.", "body"),
+    SP(6),
+    P("<b>candidate_disambig.py</b> dosyasında görülebileceği üzere, sisteme verilen "
+      "bir cümlenin her kelimesi için önce bu olası aday listesi (candidate list) "
+      "çekilmekte, ardından CRF modelinin marjinal olasılıkları "
+      "(<i>predict_marginals</i>) kullanılarak bu adaylar arasında en yüksek "
+      "olasılıklı olanı seçilerek 'Disambiguation' (Çözümleme) işlemi "
+      "tamamlanmaktadır.", "body"),
+    SP(6),
+    P("<b>İki Aşamalı Morfolojik Pipeline (Two-Stage Pipeline)</b>", "h2"),
+    P("Morfolojik özellik (FEATS) tahmini için iki aşamalı bir mimari "
+      "benimsenmiştir:", "body"),
+    P("• <b>Aşama 1 — CRF:</b> Model, bağlam penceresindeki özellikler "
+      "kullanılarak her belirteç için UPOS etiketini tahmin eder (%90,93 doğruluk).", "bullet"),
+    P("• <b>Aşama 2 — Derlem Sözlüğü:</b> Tahmin edilen (kelime, UPOS) çifti için "
+      "eğitim verisindeki en sık görülen FEATS kombinasyonu atanır. Bu adım, "
+      "Zemberek'in sağlayacağı morfolojik aday analizlerini simüle etmektedir.", "bullet"),
+    SP(4),
+    P("Bu mimari tercih, 985 benzersiz UPOS+FEATS kombinasyonunu tek bir CRF "
+      "modeliyle öğretmeye çalışmanın (sınıf patlaması problemi) önüne geçerek "
+      "akademik literatürde yaygın olan pipeline yaklaşımını uygulamaktadır.", "body"),
+]
 story.append(PageBreak())
 
 # ─────────────────────────────────────────────────────────

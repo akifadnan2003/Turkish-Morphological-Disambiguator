@@ -1,15 +1,101 @@
 # Turkish Morphological Disambiguator
 
 **BTU — Bursa Teknik Üniversitesi**  
-Bilgisayar Mühendisliği Bölümü | Doğal Dil İşleme | 2025–2026 Bahar Dönemi
+Bilgisayar Mühendisliği Bölümü | Doğal Dil İşleme | 2025–2026 Bahar Dönemi  
+**Öğrenci:** Akif Adnan — 20360859106 | Bireysel Çalışma
+
+---
+
+## How to Run
+
+> Run all commands from inside the project folder. Python 3.8+ required.
+
+### 1. Install dependencies
+```bash
+pip install sklearn-crfsuite scikit-learn matplotlib seqeval conllu flask python-docx reportlab
+```
+
+### 2. Download treebank data
+```bash
+python download_data.py
+```
+Downloads the UD Turkish-IMST treebank (train/dev/test splits) into `data/`. Takes ~10 seconds.
+
+### 3. Train the CRF model
+```bash
+python -X utf8 morpho_disambig.py
+```
+- Trains CRF on 3,435 sentences — takes **1–2 minutes**
+- Prints accuracy, precision, recall, F1 for dev and test sets
+- Saves confusion matrix + per-class F1 charts to `results/`
+- Saves trained model to `model/crf_model.pkl`
+
+> **Skip this step** if `model/crf_model.pkl` already exists — the pre-trained model is included.
+
+### 4. Run the web dashboard
+```bash
+python -X utf8 app.py
+```
+Then open **http://127.0.0.1:5000** in a browser.
+
+The dashboard includes:
+- Live sentence analysis — type any Turkish sentence and get color-coded POS tags with confidence scores
+- CoNLL-U format output table
+- Per-class precision / recall / F1 tables for the treebank test set
+- My 25 manually annotated sentences with gold vs. predicted comparison, filterable by domain
+- My feature engineering cards showing the 12 Turkish suffix feature groups
+
+### 5. (Optional) Evaluate on manual annotations only
+```bash
+python -X utf8 evaluate_custom.py
+```
+Runs the model on `my_annotations.conllu` and prints a token-by-token comparison with per-class F1 report.
+
+### 6. (Optional) Zemberek candidate disambiguation demo
+```bash
+python -X utf8 candidate_disambig.py
+```
+Demonstrates the candidate generation + CRF disambiguation pipeline on example sentences.
+
+---
+
+## Reports
+
+Pre-built reports are in the `report/` folder — no need to run anything:
+
+| File | Description |
+|------|-------------|
+| `report/NLP_Project_Report_AkifAdnan.pdf` | PDF project report |
+| `report/NLP_Project_Report_AkifAdnan.docx` | Word project report |
+
+---
+
+## Project Structure
+
+```
+├── download_data.py         Downloads UD Turkish-IMST treebank
+├── morpho_disambig.py       CRF feature extraction, training, evaluation
+├── candidate_disambig.py    Zemberek-style candidate generation + CRF disambiguation demo
+├── evaluate_custom.py       Evaluates model on manual annotations
+├── app.py                   Flask web dashboard
+├── templates/
+│   └── index.html           Web UI
+├── my_annotations.conllu    25 manually annotated Turkish sentences (CoNLL-U format)
+├── report/
+│   ├── NLP_Project_Report_AkifAdnan.pdf
+│   └── NLP_Project_Report_AkifAdnan.docx
+├── data/                    Treebank files (created by download_data.py)
+├── model/                   Trained CRF model (created by morpho_disambig.py)
+└── results/                 Charts and predictions (created by morpho_disambig.py)
+```
 
 ---
 
 ## Overview
 
-CRF-based morphological disambiguation for Turkish. Given a sentence, the model predicts the correct **Universal Part-of-Speech (UPOS)** tag for each token using a Conditional Random Fields (CRF) model trained on the **UD Turkish-IMST Treebank**.
+CRF-based morphological disambiguation for Turkish. The model predicts the correct **Universal Part-of-Speech (UPOS)** tag for each token using a Conditional Random Fields (CRF) model trained on the **UD Turkish-IMST Treebank**.
 
-Morphological disambiguation is the task of selecting the correct grammatical reading of each word in context. Turkish is an agglutinative language where the same surface form can carry multiple possible analyses — this model resolves that ambiguity using learned sequence features.
+Morphological disambiguation is the task of selecting the correct grammatical reading of each word in context. Turkish is agglutinative — the same surface form can carry multiple possible analyses. This model resolves that ambiguity using learned sequence features.
 
 | Metric | Treebank Test Set | Manual Annotations |
 |--------|:-----------------:|:------------------:|
@@ -20,80 +106,11 @@ Morphological disambiguation is the task of selecting the correct grammatical re
 
 ---
 
-## Project Structure
+## My Contributions
 
-```
-├── download_data.py        # Downloads UD Turkish-IMST treebank splits
-├── morpho_disambig.py      # Feature extraction, CRF training, evaluation, model save
-├── evaluate_custom.py      # Evaluates model against manually annotated sentences
-├── app.py                  # Flask web demo server
-├── templates/
-│   └── index.html          # Web UI — spaCy-style annotation view + CoNLL-U table
-├── my_annotations.conllu   # 25 manually annotated Turkish sentences (CoNLL-U format)
-└── README.md
-```
+### Manual Annotations (`my_annotations.conllu`)
 
-> **Generated on first run** (not tracked in git):
-> `data/` — treebank files &nbsp;|&nbsp; `model/` — trained CRF weights &nbsp;|&nbsp; `results/` — charts and predictions
-
----
-
-## Setup
-
-```bash
-pip install sklearn-crfsuite scikit-learn matplotlib seqeval conllu flask
-```
-
----
-
-## Usage
-
-### Step 1 — Download treebank data
-```bash
-python download_data.py
-```
-Downloads `tr_imst-ud-train.conllu`, `tr_imst-ud-dev.conllu`, `tr_imst-ud-test.conllu` into `./data/`.
-
-### Step 2 — Train and evaluate
-```bash
-python -X utf8 morpho_disambig.py
-```
-- Trains CRF on 3,435 sentences
-- Evaluates on dev and test splits
-- Saves per-class precision / recall / F1 / accuracy
-- Generates confusion matrix and F1 bar chart as PNG files in `./results/`
-- Saves trained model to `./model/crf_model.pkl`
-- Writes CoNLL-U predictions to `./results/predictions.conllu`
-
-### Step 3 — Evaluate on manual annotations
-```bash
-python -X utf8 evaluate_custom.py
-```
-Runs the trained model on the 25 hand-annotated sentences in `my_annotations.conllu` and prints a token-by-token comparison with per-class F1 report.
-
-### Step 4 — Launch web demo
-```bash
-python -X utf8 app.py
-```
-Open **http://127.0.0.1:5000**
-
----
-
-## Web Demo
-
-The Flask web application provides a live demonstration interface:
-
-- **Input** — type any space-tokenized Turkish sentence or click an example
-- **Visual tab** — spaCy-style inline annotation with color-coded POS tags and confidence scores per token
-- **CoNLL-U tab** — full CoNLL-U format table output
-- **Sidebar** — model performance metrics (accuracy, weighted F1, dataset stats)
-- **Charts** — confusion matrix and per-class F1 bar chart embedded on the page
-
----
-
-## Manual Annotations (`my_annotations.conllu`)
-
-25 Turkish sentences manually annotated in CoNLL-U format, covering:
+25 Turkish sentences I personally annotated in CoNLL-U format, covering 6 domains:
 
 | Domain | Sentences |
 |--------|:---------:|
@@ -104,57 +121,39 @@ The Flask web application provides a live demonstration interface:
 | Nature | 1 |
 | NLP evaluation | 1 |
 
-Each token is annotated with:
-- **UPOS** — Universal Part-of-Speech tag
-- **Lemma** — dictionary root form
-- **FEATS** — morphological features: `Case`, `Number`, `Person`, `Tense`, `Mood`, `Polarity`, `VerbForm`, `Voice`, `Poss`
+Each token is annotated with UPOS, Lemma, and morphological FEATS (`Case`, `Number`, `Person`, `Tense`, `Mood`, `Polarity`, `VerbForm`, `Voice`, `Poss`). Includes linguistically interesting cases: converbs (`VerbForm=Conv`), verbal nouns (`VerbForm=Vnoun`), negative polarity, passive voice.
 
-Annotations include linguistically interesting cases such as converbs (`VerbForm=Conv`), verbal nouns (`VerbForm=Vnoun`), negative polarity (`Polarity=Neg`), and passive voice (`Voice=Pass`).
+### Feature Engineering
 
----
+40+ hand-crafted Turkish-specific features encoding morphological knowledge:
 
-## Features
-
-**Turkish-specific suffix features** (40+ features encoding morphological knowledge):
-
-| Feature | Examples | Signal |
+| Feature Group | Examples | Target Tag |
 |---------|---------|--------|
 | Ablative suffix | `-dan`, `-den`, `-tan`, `-ten` | NOUN |
 | Locative suffix | `-da`, `-de`, `-ta`, `-te` | NOUN |
-| Present cont. | `-yor`, `-iyor` | VERB |
+| Present continuous | `-yor`, `-iyor` | VERB |
 | Past tense | `-dı`, `-di`, `-du`, `-dü` | VERB |
 | Plural | `-lar`, `-ler` | NOUN |
 | Infinitive | `-mak`, `-mek` | VERB |
-| Adj-forming | `-lı`, `-li`, `-lu`, `-lü` | ADJ |
+| Adjective-forming | `-lı`, `-li`, `-lu`, `-lü` | ADJ |
 | Evidential past | `-mış`, `-miş`, `-muş`, `-müş` | VERB |
 
-**Context window:** ±2 tokens (previous 2 and next 2 words)
+Context window: ±2 tokens. Word shape features: capitalization, digits, apostrophe (proper noun signal). Vowel harmony class of the last vowel.
 
-**Word shape:** capitalization, digits, apostrophe (proper noun indicator)
+### Two-Stage Pipeline (Zemberek Simulation)
 
-**Vowel harmony:** front/back vowel class of the last vowel in the word
+The project spec requires Zemberek-based candidate generation. Since Java/gRPC dependencies are impractical in a Python environment, this is simulated with a **Corpus-Based Candidate Dictionary**:
 
----
+- **Stage 1 — CRF:** predicts UPOS tag in context (90.93% accuracy)
+- **Stage 2 — Corpus dictionary:** assigns the most frequent FEATS seen for that (word, UPOS) pair in training (11,762 entries)
 
-## Output Format
-
-All predictions are written in **CoNLL-U format** as required by the project specification:
-
-```
-# text = Dün akşam toplantıdan erken çıktım .
-1   Dün          dün      ADV    ADV   _  _  _  _  _
-2   akşam        akşam    ADV    ADV   _  _  _  _  _
-3   toplantıdan  toplantı NOUN   NOUN  Case=Abl|Number=Sing|Person=3  _  _  _  _
-4   erken        erken    ADV    ADV   _  _  _  _  _
-5   çıktım       çık      VERB   VERB  Mood=Ind|Number=Sing|Person=1|Tense=Past  _  _  _  _
-6   .            .        PUNCT  PUNCT _  _  _  _  _
-```
+`candidate_disambig.py` shows the full pipeline: candidate list per word → CRF marginal scoring → best analysis selected.
 
 ---
 
 ## Evaluation Results
 
-### Treebank Test Set (1,100 sentences)
+### Treebank Test Set (1,100 sentences, 10,032 tokens)
 
 ```
               precision    recall  f1-score   support
@@ -200,5 +199,5 @@ weighted avg     0.9099    0.9093    0.9080     10032
 **Key observations:**
 - VERB and PUNCT are disambiguated near-perfectly — Turkish verb morphology (tense/person suffixes) is highly distinctive
 - PROPN recall is 100% but precision 75% — the model over-predicts proper nouns for unknown capitalized words
-- ADV recall drops to 46% on the custom set — short adverbs like *dün*, *bugün*, *yarın* lack strong suffix signals and are frequently confused with NOUN
+- ADV recall drops to 46% on the custom set — short adverbs like *dün*, *bugün*, *yarın* lack strong suffix signals
 - ADJ/NOUN boundary is the hardest — Turkish adjectives and nouns often share identical surface forms
